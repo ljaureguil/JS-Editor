@@ -36,6 +36,15 @@ height:45%;
     border-style: solid;;
     display:none;
 }
+#canvas{
+   height:45%;
+    position:absolute;
+    top:55%;
+    width: 98%;
+ 
+    border-style: solid;;
+    display:none;
+}
 </style>
 <div id=""todo">
 <textarea id="teditor" placeholder="Type your codes here...(for your variables use var *recommended)"></textarea>
@@ -47,6 +56,11 @@ height:45%;
       <option>Delete actual project</option>
       <option>Show div testing</option>
        <option>Hide div testing</option>    
+     <option>Show canvas</option>
+       <option>Hide canvas <canvas></canvas></option>    
+
+
+
 <option></option>
      <option>Delete all projects</option>    
 </select>
@@ -58,9 +72,10 @@ height:45%;
 
 </div>>
 <div id="dtesting"></div>
+<canvas id="canvas"></canvas>
 
 <script>
-arpr=[];
+arpr=[],actual="";
 //localStorage.removeItem("projects")
     var ll=localStorage.getItem("projects");
     if(ll!=null){
@@ -86,6 +101,7 @@ function procesar(v){
     eval(v)
 }
 function selPr(v){
+    actual=v;
      var ind=verifypr(v);
  
     if(ind>-1) {
@@ -98,6 +114,8 @@ function selPr(v){
 function selopc(v){
     if(v==="Show div testing") dtesting.style.display="inline-block"
    if(v==="Hide div testing") dtesting.style.display="none"
+   if(v==="Show canvas") canvas.style.display="inline-block"
+   if(v==="Hide canvas") canvas.style.display="none"
 
     if(v==="Delete all projects"){
 
@@ -124,7 +142,7 @@ function selopc(v){
     }
 if(v==="Save project"){
 
-    var n=prompt("Type project name");
+    var n=prompt("Type project name",actual);
     var ind=verifypr(n)
     if(ind===-1){
   
