@@ -15,12 +15,26 @@ margin: 5px;
     padding:5px;
 width:100%;
 height:45%;
+//background-color: red;;
+//color: white;
 
 }
 #display{
     padding: 5px;
 width:100%;
 height:45%;
+//background-color: blue;
+////color: white;
+}
+#dtesting{
+ 
+    height:45%;
+    position:absolute;
+    top:55%;
+    width: 98%;
+    background-color: red;
+    border-style: solid;;
+    display:none;
 }
 </style>
 <div id=""todo">
@@ -31,6 +45,8 @@ height:45%;
     <option>Select Option</option>
      <option>Save project</option>
       <option>Delete actual project</option>
+      <option>Show div testing</option>
+       <option>Hide div testing</option>    
 <option></option>
      <option>Delete all projects</option>    
 </select>
@@ -38,9 +54,10 @@ height:45%;
     <option>Select Prtoject</option>
  
 </select>
-<textarea id="display" placeholder="This variable is 'display', to shoe results use ' display.value=Your_Variable '"></textarea>
+<textarea id="display" placeholder="This variable is 'display', to shoe results use ' display.value=Your_Variable,**To handle div Testing use 'dtesting' variable'"></textarea>
 
 </div>>
+<div id="dtesting"></div>
 
 <script>
 arpr=[];
@@ -79,6 +96,9 @@ function selPr(v){
     }
 }
 function selopc(v){
+    if(v==="Show div testing") dtesting.style.display="inline-block"
+   if(v==="Hide div testing") dtesting.style.display="none"
+
     if(v==="Delete all projects"){
 
         if(confirm("Are you sure you want to delete all projects?")){
