@@ -7,34 +7,139 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 </head>
 <style>
+    #todo{
+margin: 5px;
+
+    }
 #teditor{
     padding:5px;
 width:100%;
 height:45%;
 
 }
-#tresult{
-    padding: 5%;
+#display{
+    padding: 5px;
 width:100%;
 height:45%;
 }
 </style>
 <div id=""todo">
-<textarea id="teditor" placeholder="Type your codes here..."></textarea>
+<textarea id="teditor" placeholder="Type your codes here...(for your variables use var *recommended)"></textarea>
 <button onclick="procesar(teditor.value)">Process</button>
-<select id="saction(this.value)">
+<select id="sselopc" oninput="selopc(this.value)"> 
+ 
     <option>Select Option</option>
+     <option>Save project</option>
+      <option>Delete actual project</option>
+<option></option>
+     <option>Delete all projects</option>    
 </select>
-<textarea id="tresult" placeholder="This variable is 'tresult'"></textarea>
+<select id="spr" oninput="selPr(this.value)">
+    <option>Select Prtoject</option>
+ 
+</select>
+<textarea id="display" placeholder="This variable is 'display', to shoe results use ' display.value=Your_Variable '"></textarea>
 
 </div>>
 
 <script>
+arpr=[];
+//localStorage.removeItem("projects")
+    var ll=localStorage.getItem("projects");
+    if(ll!=null){
+ 
+arpr=JSON.parse(ll);
+
+
+    } 
+
+setuppr();
+    function setuppr(){
+    spr.innerHTML="<option>Select a project</option>"
+    for(var i=0;i<arpr.length;i++){
+        e=arpr[i];
+  
+        spr.innerHTML+="<option>"+e.name+"</option>"
+  
+    }
+  
+    }
 
 function procesar(v){
     eval(v)
 }
+function selPr(v){
+     var ind=verifypr(v);
+ 
+    if(ind>-1) {
+     //   alert(JSON.stringify(arpr[ind]))
+        teditor.value=arpr[ind].cont;
+        procesar(teditor.value);
+        selPr.value="Select a project";
+    }
+}
+function selopc(v){
+    if(v==="Delete all projects"){
 
+        if(confirm("Are you sure you want to delete all projects?")){
+            if(confirm("I am ready to delete all projects, proceed?")) localStorage.removeItem("projects");
+        }
+    }
+    if(v==="Delete actual project"){
+   
+        if(confirm("Are you sure you want to delete "+spr.value+" Project?")){
+            var ind=verifypr(spr.value);
+            if(ind>-1) {
+              
+                if(confirm("I am ready to delete "+v+" project, proceed?")){ 
+                     arpr.splice(ind,1);  
+                localStorage.setItem("projects",JSON.stringify(arpr));
+                alert("Project has been deleted, app will restart");
+                window.location.reload();
+
+            }
+            }
+        }
+
+    }
+if(v==="Save project"){
+
+    var n=prompt("Type project name");
+    var ind=verifypr(n)
+    if(ind===-1){
+  
+var o={};
+o.name=n;
+o.cont=teditor.value;
+arpr.push(o);
+//alert(JSON.stringify(arpr));
+localStorage.setItem("projects",JSON.stringify(arpr));
+alert("Project "+n+" has been saved locally")
+setuppr();
+
+    }
+else {
+    if(confirm("Project already exist, do you want to replace it?")){
+        arpr[ind].cont=teditor.value;
+     localStorage.setItem("projects",JSON.stringify(arpr));   
+     alert("Project "+n+" has been updated");
+
+    }
+
+}
+
+}
+}
+
+function verifypr(v){
+      for(var i=0;i<arpr.length;i++){
+        var e=arpr[i];
+        if(e.name===v){
+            return i;
+        }
+    }
+    return -1;
+}
 
 
 
