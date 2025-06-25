@@ -1,0 +1,86 @@
+<HTML>
+<head>
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="https://www.citypng.com/public/uploads/preview/js-javascript-round-logo-icon-png-7017516947717339mnyf7eumy.png">
+    <title>Js-Editor</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+</head>
+<style>
+#teditor{
+    padding:5px;
+width:100%;
+height:45%;
+
+}
+#tresult{
+    padding: 5%;
+width:100%;
+height:45%;
+}
+</style>
+<div id=""todo">
+<textarea id="teditor" placeholder="Type your codes here..."></textarea>
+<button onclick="procesar(teditor.value)">Process</button>
+<select id="saction(this.value)">
+    <option>Select Option</option>
+</select>
+<textarea id="tresult" placeholder="This variable is 'tresult'"></textarea>
+
+</div>>
+
+<script>
+
+function procesar(v){
+    eval(v)
+}
+
+
+
+
+
+
+
+
+    function GetJ(url, callback) {
+
+            //var url  = "http://localhost:8080/api/v1/users";
+            var xhr = new XMLHttpRequest()
+            xhr.open('GET', url + '/1', true)
+            xhr.onload = function() {
+                //         (xhr.responseText)
+                var users = JSON.parse(xhr.responseText);
+                //     var obb=decoding(users.prim);
+
+                if (xhr.readyState == 4 && xhr.status == "200") {
+                    callback(users);
+                } else {
+                    console.error(users);
+                }
+            }
+            xhr.send(null);
+        }
+
+         // Update a user
+        function UpdateJ(url, ob, callback) {
+
+            json = JSON.stringify(ob);
+            var xhr = new XMLHttpRequest();
+            xhr.open("PUT", url + '/12', true);
+            xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+            xhr.onload = function() {
+                var users = JSON.parse(xhr.responseText);
+                if (xhr.readyState == 4 && xhr.status == "200") {
+                    //  alert("Tu Forma ha sido Enviada");
+                    if (callback != undefined) callback(users);
+                } else {
+                    (users);
+                }
+            }
+            xhr.send(json);
+        }
+
+
+
+</script>
+</HTML>
