@@ -8,7 +8,9 @@
 </head>
 <style>
     #todo{
-margin: 5px;
+//margin: 5px;
+text-align: center;
+
 
     }
 #teditor{
@@ -17,6 +19,7 @@ width:100%;
 height:45%;
 //background-color: red;;
 //color: white;
+
 
 }
 #display{
@@ -35,70 +38,145 @@ height:45%;
     background-color: red;
     border-style: solid;;
     display:none;
+        box-shadow: -5px 5px 20px rgba(200,200,200,.95);
+
+
 }
 #canvas{
    height:45%;
     position:absolute;
     top:55%;
     width: 98%;
+    box-shadow: -5px 5px 20px rgba(200,200,200,.95);
  
     border-style: solid;;
     display:none;
 }
+#menu{
+    position: absolute;;
+    width: 60%;
+    height: 30%;
+    top:55%;
+    left: 10%;
+    background-color: antiquewhite;
+    display: none;
+    padding: 15px;
+    box-shadow: -5px 5px 20px rgba(200,200,200,.95);
+    border-style: solid;
+
+
+}
+select{
+    width:40%;
+    margin: 10px;
+}
+button{
+    width: 45%;
+    margin: 10px;
+}
 </style>
-<button onclick="alert('about')" style="position:absolute;top:2%;right:2%;" >?</button>
+<button onclick="alert('about')" style="position:absolute;top:2%;right:2%;background-color: red;color:white;width: auto;;" >?</button>
 <div id="todo">
 <textarea id="teditor" placeholder="Type your codes here...(for your variables use var *recommended)"></textarea>
 <button onclick="procesar(teditor.value)">Process</button>
-<select id="sselopc" oninput="selopc(this.value)"> 
+<button onclick="if(menu.style.display==='block'){menu.style.display='none';this.style.background='#eeeeee'}else {menu.style.display='block';this.style.background='#00ff00'}">Menu</button>
+
+
+<textarea id="display" placeholder="This variable is 'display', to shoe results use ' display.value=Your_Variable,**To handle div Testing use 'dtesting' variable'"></textarea>
+
+
+</div>>
+<div id="dtesting"></div>
+<canvas id="canvas"></canvas>
+<div id="menu">
+<select id="sselopc" oninput="selopc(this.value)">
  
     <option>Select Option</option>
-     <option>Save project</option>
+ 
+      <option>Save project</option>
+      <option>Save project to web</option>    
       <option>Delete actual project</option>
       <option>Show div testing</option>
        <option>Hide div testing</option>    
      <option>Show canvas</option>
-       <option>Hide canvas <canvas></canvas></option>    
+       <option>Hide canvas <canvas></canvas></option>  
+       <option>New project</option>  
+
+
+
 
 
 
 <option></option>
      <option>Delete all projects</option>    
 </select>
+
+
 <select id="spr" oninput="selPr(this.value)">
     <option>Select Prtoject</option>
  
 </select>
-<textarea id="display" placeholder="This variable is 'display', to shoe results use ' display.value=Your_Variable,**To handle div Testing use 'dtesting' variable'"></textarea>
+<select id="sexamples">
+<option>Select an Example</optn  ion>
+<option></option>
+</select>
+<select id="sweb" oninput="selPrw(this.value)">
+<option>Select from Web</option>
+<option></option>
+</select>
+</div>
 
-</div>>
-<div id="dtesting"></div>
-<canvas id="canvas"></canvas>
 
 <script>
-arpr=[],actual="";
+    link="https://jsonblob.com/api/1387824581984837632"
+var arpr=[],actual="",arw=[], obactual=[];
 //localStorage.removeItem("projects")
+GetJ(link,function(r){
+arw=r;
+setupprw()
+
+
+})
+
+
+
+
     var ll=localStorage.getItem("projects");
     if(ll!=null){
  
 arpr=JSON.parse(ll);
 
 
-    } 
+    }
+
 
 setuppr();
     function setuppr(){
     spr.innerHTML="<option>Select a project</option>"
     for(var i=0;i<arpr.length;i++){
         e=arpr[i];
-  
+ 
         spr.innerHTML+="<option>"+e.name+"</option>"
-  
+ 
     }
-  
+ 
     }
+//sessionStorage();
+    function setupprw(){
+    sweb.innerHTML="<option>Select a web project</option>"
+    for(var i=0;i<arw.length;i++){
+        e=arw[i];
+ 
+        sweb.innerHTML+="<option>"+e.name+"</option>"
+ 
+    }
+ 
+    }
+   
+
 
 function procesar(v){
+  //  alert(v)
     eval(v)
 }
 function selPr(v){
@@ -106,19 +184,71 @@ function selPr(v){
      var ind=verifypr(v);
  
     if(ind>-1) {
-     //   alert(JSON.stringify(arpr[ind]))
+        obactual=arpr[ind];
+ 
         teditor.value=arpr[ind].cont;
         procesar(teditor.value);
-        selPr.value="Select a project";
+     //   selPr.value="Select a project";
     }
 }
 function selopc(v){
+
+
+ 
+     if(v==="Save project to web") {
+        var n=obactual.name;
+ 
+            if(n===undefined){
+                var n=prompt("Type project name","");
+                if(n!="") obactual={name:n,cont:teditor.value}
+                else {alert("Wrong name, try again");return;}
+
+
+            }
+            var ind=verifyprw(n); //  alert(n)
+            if(ind==-1){
+             
+      if(confirm("This project will be sent to web, are you sure?")){
+
+
+        arw.push(obactual);
+        UpdateJ(link,arw,function(){alert("Project "+obactual.name+"  has been saved in web");setupprw()})
+
+
+        }
+    }
+    else{
+
+
+    if(confirm("Project already exist in web, do you want to replace it?")){
+        arw[ind].cont=teditor.value;
+     UpdateJ(link,arw,function(){alert("Project "+obactual.name+" has been saved in web")})
+     alert("Project "+n+" has been updated");
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+    }
+       
+      }
+       if(v==="New project") {obactual={};teditor.value="";display.value="";actual=""}
     if(v==="Show div testing") dtesting.style.display="inline-block"
    if(v==="Hide div testing") dtesting.style.display="none"
    if(v==="Show canvas") canvas.style.display="inline-block"
    if(v==="Hide canvas") canvas.style.display="none"
 
+
     if(v==="Delete all projects"){
+
 
         if(confirm("Are you sure you want to delete all projects?")){
             if(confirm("I am ready to delete all projects, proceed?")) localStorage.removeItem("projects");
@@ -129,24 +259,27 @@ function selopc(v){
         if(confirm("Are you sure you want to delete "+spr.value+" Project?")){
             var ind=verifypr(spr.value);
             if(ind>-1) {
-              
-                if(confirm("I am ready to delete "+v+" project, proceed?")){ 
+             
+                if(confirm("I am ready to delete "+v+" project, proceed?")){
                      arpr.splice(ind,1);  
                 localStorage.setItem("projects",JSON.stringify(arpr));
                 alert("Project has been deleted, app will restart");
                 window.location.reload();
 
+
             }
             }
         }
 
+
     }
 if(v==="Save project"){
+
 
     var n=prompt("Type project name",actual);
     var ind=verifypr(n)
     if(ind===-1){
-  
+ 
 var o={};
 o.name=n;
 o.cont=teditor.value;
@@ -156,21 +289,26 @@ localStorage.setItem("projects",JSON.stringify(arpr));
 alert("Project "+n+" has been saved locally")
 setuppr();
 
+
     }
 else {
     if(confirm("Project already exist, do you want to replace it?")){
         arpr[ind].cont=teditor.value;
-     localStorage.setItem("projects",JSON.stringify(arpr));   
+     localStorage.setItem("projects",JSON.stringify(arpr));  
      alert("Project "+n+" has been updated");
+
 
     }
 
+
 }
+
 
 }
 }
 
-function verifypr(v){
+
+function verifypr(v,ar){
       for(var i=0;i<arpr.length;i++){
         var e=arpr[i];
         if(e.name===v){
@@ -181,12 +319,37 @@ function verifypr(v){
 }
 
 
+function verifyprw(v){
+      for(var i=0;i<arw.length;i++){
+        var e=arw[i];
+        if(e.name===v){
+            return i;
+        }
+    }
+    return -1;
+}
+function selPrw(v){
+    actual=v;
+     var ind=verifyprw(v);
+ 
+    if(ind>-1) {
+        obactual=arw[ind];
+ 
+        teditor.value=arw[ind].cont;
+        procesar(teditor.value);
+     //   selPr.value="Select a project";
+    }
+}
+
+
+
 
 
 
 
 
     function GetJ(url, callback) {
+
 
             //var url  = "http://localhost:8080/api/v1/users";
             var xhr = new XMLHttpRequest()
@@ -195,6 +358,7 @@ function verifypr(v){
                 //         (xhr.responseText)
                 var users = JSON.parse(xhr.responseText);
                 //     var obb=decoding(users.prim);
+
 
                 if (xhr.readyState == 4 && xhr.status == "200") {
                     callback(users);
@@ -205,8 +369,10 @@ function verifypr(v){
             xhr.send(null);
         }
 
+
          // Update a user
         function UpdateJ(url, ob, callback) {
+
 
             json = JSON.stringify(ob);
             var xhr = new XMLHttpRequest();
@@ -225,6 +391,79 @@ function verifypr(v){
         }
 
 
+/*function selopcw(v){
 
+
+      if(v==="Save actual project to web") {
+        arw.push()
+       
+      }
+    if(v==="Show div testing") dtesting.style.display="inline-block"
+   if(v==="Hide div testing") dtesting.style.display="none"
+   if(v==="Show canvas") canvas.style.display="inline-block"
+   if(v==="Hide canvas") canvas.style.display="none"
+
+
+    if(v==="Delete all projects"){
+
+
+        if(confirm("Are you sure you want to delete all projects?")){
+            if(confirm("I am ready to delete all projects, proceed?")) localStorage.removeItem("projects");
+        }
+    }
+    if(v==="Delete actual project"){
+   
+        if(confirm("Are you sure you want to delete "+spr.value+" Project?")){
+            var ind=verifypr(spr.value);
+            if(ind>-1) {
+             
+                if(confirm("I am ready to delete "+v+" project, proceed?")){
+                     arpr.splice(ind,1);  
+                localStorage.setItem("projects",JSON.stringify(arpr));
+                alert("Project has been deleted, app will restart");
+                window.location.reload();
+
+
+            }
+            }
+        }
+
+
+    }
+if(v==="Save project"){
+
+
+    var n=prompt("Type project name",actual);
+    var ind=verifypr(n)
+    if(ind===-1){
+ 
+var o={};
+o.name=n;
+o.cont=teditor.value;
+arpr.push(o);
+//alert(JSON.stringify(arpr));
+localStorage.setItem("projects",JSON.stringify(arpr));
+alert("Project "+n+" has been saved locally")
+setuppr();
+
+
+    }
+else {
+    if(confirm("Project already exist, do you want to replace it?")){
+        arpr[ind].cont=teditor.value;
+     localStorage.setItem("projects",JSON.stringify(arpr));  
+     alert("Project "+n+" has been updated");
+
+
+    }
+
+
+}
+
+
+}
+}
+*/
 </script>
 </HTML>
+
