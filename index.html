@@ -9,7 +9,7 @@
 <style>
     #todo{
 //margin: 5px;
-text-align: center;
+
 
 
     }
@@ -23,35 +23,18 @@ height:45%;
 
 }
 #display{
-    padding: 5px;
-width:100%;
-height:45%;
-//background-color: blue;
-////color: white;
+
 }
 #dtesting{
- 
-    height:45%;
-    position:absolute;
-    top:55%;
-    width: 98%;
-    background-color: red;
-    border-style: solid;;
-    display:none;
-        box-shadow: -5px 5px 20px rgba(200,200,200,.95);
+display: inline;
+  
+  background-color: blue;
 
 
 }
 #canvas{
-   height:45%;
-    position:absolute;
-    top:55%;
-    width: 98%;
-    box-shadow: -5px 5px 20px rgba(200,200,200,.95);
- 
-    border-style: solid;;
-    display:none;
-}
+
+ }
 #menu{
     position: absolute;;
     width: 60%;
@@ -74,20 +57,51 @@ button{
     width: 40%;
     margin: 10px;
 }
+#coo{
+    width: 100%;
+    height:45%;
+    overflow:auto;
+ 
+}
+#ress{
+    display:flex
+ 
+ bottom:1%;
+    width: 300%;
+    height: 100%;
+    background:gold;
+
+
+}
+.els {
+ width:30%;
+ height:95%;
+ margin: 5px;
+  border-style: solid;
+        box-shadow: -5px 5px 20px rgba(200,200,200,.95);
+
+
+}
+
 </style>
 <button onclick="alert('about')" style="position:absolute;top:2%;right:2%;background-color: red;color:white;width: auto;;" >?</button>
 <div id="todo">
 <textarea id="teditor" placeholder="Type your codes here...(for your variables use var *recommended)"></textarea>
+
+
 <button onclick="procesar(teditor.value)">Process</button>
 <button onclick="if(menu.style.display==='block'){menu.style.display='none';this.style.background='#eeeeee'}else {menu.style.display='block';this.style.background='#00ff00'}">Menu</button>
 
 
-<textarea id="display" placeholder="This variable is 'display', to shoe results use ' display.value=Your_Variable,**To handle div Testing use 'dtesting' variable'"></textarea>
+
+<div id="coo">
+<div id="ress">
+<textarea id="display" class="els" placeholder="This variable is 'display', texarea'"></textarea><canvas id="canvas" class="els">canvas</canvas><div id="dtesting" class="els" style="width:30%;height:100%;">div testing</div>
 
 
-</div>>
-<div id="dtesting"></div>
-<canvas id="canvas"></canvas>
+</div>
+</div>
+
 <div id="menu">
 <select id="sselopc" oninput="selopc(this.value)">
  
@@ -486,4 +500,3 @@ else {
 */
 </script>
 </HTML>
-
