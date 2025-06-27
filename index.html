@@ -71,7 +71,7 @@ select{
     margin: 10px;
 }
 button{
-    width: 45%;
+    width: 40%;
     margin: 10px;
 }
 </style>
@@ -129,7 +129,7 @@ button{
 
 <script>
     link="https://jsonblob.com/api/1387824581984837632"
-var arpr=[],actual="",arw=[], obactual=[];
+var arpr=[],actual="",arw=[], obactual=[],from="local";
 //localStorage.removeItem("projects")
 GetJ(link,function(r){
 arw=r;
@@ -185,6 +185,7 @@ function selPr(v){
  
     if(ind>-1) {
         obactual=arpr[ind];
+        from="local"
  
         teditor.value=arpr[ind].cont;
         procesar(teditor.value);
@@ -255,19 +256,36 @@ function selopc(v){
         }
     }
     if(v==="Delete actual project"){
+        var s=""
+        if(from==="local")s=spr.value;
+        else s=sweb.value;
    
-        if(confirm("Are you sure you want to delete "+spr.value+" Project?")){
-            var ind=verifypr(spr.value);
+        if(confirm("Are you sure you want to delete "+s+" '"+from+"' Project?")){
+            var ind;
+            if(from==="local")ind=verifypr(s);
+            else ind=verifyprw(s)
             if(ind>-1) {
-             
-                if(confirm("I am ready to delete "+v+" project, proceed?")){
-                     arpr.splice(ind,1);  
+             var ar
+                if(confirm("I am ready to delete "+s+" project, proceed?")){
+                    alert(from)
+                   if(from==="local"){ 
+                       arpr.splice(ind,1);  
                 localStorage.setItem("projects",JSON.stringify(arpr));
                 alert("Project has been deleted, app will restart");
-                window.location.reload();
+                 window.location.reload();
+                   }
+                   else{
+                       alert("in de web"+ind)
+                       arw.splice(ind,1);
+                       alert(arw.length)
+                     //  UpdateJ(link,arw,function(){alert("Project "+obactual.name+" has been saved in web")})
+                       UpdateJ(link,arw,function(){alert("Project has been deleted from web/n/nThe app will restart"); window.location.reload();})
+                   }
+               
 
 
             }
+            else alert("no")
             }
         }
 
@@ -329,11 +347,13 @@ function verifyprw(v){
     return -1;
 }
 function selPrw(v){
+
     actual=v;
      var ind=verifyprw(v);
  
     if(ind>-1) {
         obactual=arw[ind];
+        from="web"
  
         teditor.value=arw[ind].cont;
         procesar(teditor.value);
