@@ -22,9 +22,9 @@ height:45%;
 
 
 }
-#
-#div{
 
+#container{
+//display:inline-block;
   float:right;
   background-color: blue;
 
@@ -62,7 +62,7 @@ button{
  
 }
 #ress{
-  //  display:flex
+    display:flex;
  
  bottom:1%;
     width: 300%;
@@ -94,7 +94,7 @@ button{
 
 <div id="coo">
 <div id="ress">
-<textarea id="textarea" class="els" placeholder=" texarea"></textarea><canvas id="canvas" class="els">canvas</canvas><div id="div" class="els" >div testing</div>
+<textarea id="textarea" class="els" placeholder=" texarea"></textarea><canvas id="canvas" class="els">canvas</canvas><div id="container" class="els" >div testing</div>
 
 
 </div>
@@ -413,8 +413,8 @@ function selPrw(v){
 var about=`About:
 place your codes in the editor area, if you want to show your results in a text use "textarea" variable ( ex: texarea.value='my results')
 if you want to show graphics use "canvas" variable ( ex: canvas.getContext('2d') )
-ir you need to add some HTML tags use "div" varuable ( ex: var iege=document.createElement('input') ;div.appendChild(iage) )
-**just scroll to expose texarea, canvas and div elements.
+ir you need to add some HTML tags use "container" varuable ( ex: var iege=document.createElement('input') ;container.appendChild(iage) )
+**just scroll to expose texarea, canvas and (div)container elements.
 
 To save your project locally:  menu > Select Option > Save Project;
 To save you project in Web: menu > Select Option > Save in wev
