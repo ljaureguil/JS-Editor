@@ -13,7 +13,7 @@
 
 
     }
-#teditor{
+#editor{
     padding:5px;
 width:100%;
 height:45%;
@@ -22,12 +22,10 @@ height:45%;
 
 
 }
-#display{
+#
+#div{
 
-}
-#dtesting{
-display: inline;
-  
+  float:right;
   background-color: blue;
 
 
@@ -64,7 +62,7 @@ button{
  
 }
 #ress{
-    display:flex
+  //  display:flex
  
  bottom:1%;
     width: 300%;
@@ -74,7 +72,7 @@ button{
 
 }
 .els {
- width:30%;
+ width:33%;
  height:95%;
  margin: 5px;
   border-style: solid;
@@ -84,19 +82,19 @@ button{
 }
 
 </style>
-<button onclick="alert('about')" style="position:absolute;top:2%;right:2%;background-color: red;color:white;width: auto;;" >?</button>
+<button onclick="alert(about)" style="position:absolute;top:2%;right:2%;background-color: red;color:white;width: auto;;" >?</button>
 <div id="todo">
-<textarea id="teditor" placeholder="Type your codes here...(for your variables use var *recommended)"></textarea>
+<textarea id="editor" placeholder="Type your codes here...(for your variables use var *recommended)"></textarea>
 
 
-<button onclick="procesar(teditor.value)">Process</button>
+<button onclick="procesar(editor.value)">Process</button>
 <button onclick="if(menu.style.display==='block'){menu.style.display='none';this.style.background='#eeeeee'}else {menu.style.display='block';this.style.background='#00ff00'}">Menu</button>
 
 
 
 <div id="coo">
 <div id="ress">
-<textarea id="display" class="els" placeholder="This variable is 'display', texarea'"></textarea><canvas id="canvas" class="els">canvas</canvas><div id="dtesting" class="els" style="width:30%;height:100%;">div testing</div>
+<textarea id="textarea" class="els" placeholder=" texarea"></textarea><canvas id="canvas" class="els">canvas</canvas><div id="div" class="els" >div testing</div>
 
 
 </div>
@@ -110,10 +108,7 @@ button{
       <option>Save project</option>
       <option>Save project to web</option>    
       <option>Delete actual project</option>
-      <option>Show div testing</option>
-       <option>Hide div testing</option>    
-     <option>Show canvas</option>
-       <option>Hide canvas <canvas></canvas></option>  
+  
        <option>New project</option>  
 
 
@@ -201,8 +196,8 @@ function selPr(v){
         obactual=arpr[ind];
         from="local"
  
-        teditor.value=arpr[ind].cont;
-        procesar(teditor.value);
+        editor.value=arpr[ind].cont;
+        procesar(editor.value);
      //   selPr.value="Select a project";
     }
 }
@@ -215,7 +210,7 @@ function selopc(v){
  
             if(n===undefined){
                 var n=prompt("Type project name","");
-                if(n!="") obactual={name:n,cont:teditor.value}
+                if(n!="") obactual={name:n,cont:editor.value}
                 else {alert("Wrong name, try again");return;}
 
 
@@ -236,37 +231,27 @@ function selopc(v){
 
 
     if(confirm("Project already exist in web, do you want to replace it?")){
-        arw[ind].cont=teditor.value;
+        arw[ind].cont=editor.value;
      UpdateJ(link,arw,function(){alert("Project "+obactual.name+" has been saved in web")})
      alert("Project "+n+" has been updated");
 
 
     }
 
-
-
-
-
-
-
-
-
-
     }
        
       }
-       if(v==="New project") {obactual={};teditor.value="";display.value="";actual=""}
-    if(v==="Show div testing") dtesting.style.display="inline-block"
-   if(v==="Hide div testing") dtesting.style.display="none"
-   if(v==="Show canvas") canvas.style.display="inline-block"
-   if(v==="Hide canvas") canvas.style.display="none"
+       if(v==="New project") {obactual={};editor.value="";textarea.value="";actual=""}
+       if(v==="Delete all projects"){
 
 
-    if(v==="Delete all projects"){
-
-
-        if(confirm("Are you sure you want to delete all projects?")){
-            if(confirm("I am ready to delete all projects, proceed?")) localStorage.removeItem("projects");
+        if(confirm("Are you sure you want to delete all local projects?")){
+            if(confirm("I am ready to delete all projects, proceed?")){
+                
+                localStorage.removeItem("projects");
+                alert("App will restart");
+                window.location.reload();
+            }
         }
     }
     if(v==="Delete actual project"){
@@ -314,7 +299,7 @@ if(v==="Save project"){
  
 var o={};
 o.name=n;
-o.cont=teditor.value;
+o.cont=editor.value;
 arpr.push(o);
 //alert(JSON.stringify(arpr));
 localStorage.setItem("projects",JSON.stringify(arpr));
@@ -325,7 +310,7 @@ setuppr();
     }
 else {
     if(confirm("Project already exist, do you want to replace it?")){
-        arpr[ind].cont=teditor.value;
+        arpr[ind].cont=editor.value;
      localStorage.setItem("projects",JSON.stringify(arpr));  
      alert("Project "+n+" has been updated");
 
@@ -337,6 +322,7 @@ else {
 
 
 }
+setTimeout('sselopc.value="Select Option"',1500);
 }
 
 
@@ -369,8 +355,8 @@ function selPrw(v){
         obactual=arw[ind];
         from="web"
  
-        teditor.value=arw[ind].cont;
-        procesar(teditor.value);
+        editor.value=arw[ind].cont;
+        procesar(editor.value);
      //   selPr.value="Select a project";
     }
 }
@@ -424,79 +410,19 @@ function selPrw(v){
             xhr.send(json);
         }
 
+var about=`About:
+place your codes in the editor area, if you want to show your results in a text use "textarea" variable ( ex: texarea.value='my results')
+if you want to show graphics use "canvas" variable ( ex: canvas.getContext('2d') )
+ir you need to add some HTML tags use "div" varuable ( ex: var iege=document.createElement('input') ;div.appendChild(iage) )
+**just scroll to expose texarea, canvas and div elements.
 
-/*function selopcw(v){
+To save your project locally:  menu > Select Option > Save Project;
+To save you project in Web: menu > Select Option > Save in wev
+You cant transfer from local to wev or web to local just select a project and saved where you want it.
 
-
-      if(v==="Save actual project to web") {
-        arw.push()
-       
-      }
-    if(v==="Show div testing") dtesting.style.display="inline-block"
-   if(v==="Hide div testing") dtesting.style.display="none"
-   if(v==="Show canvas") canvas.style.display="inline-block"
-   if(v==="Hide canvas") canvas.style.display="none"
-
-
-    if(v==="Delete all projects"){
+`
 
 
-        if(confirm("Are you sure you want to delete all projects?")){
-            if(confirm("I am ready to delete all projects, proceed?")) localStorage.removeItem("projects");
-        }
-    }
-    if(v==="Delete actual project"){
-   
-        if(confirm("Are you sure you want to delete "+spr.value+" Project?")){
-            var ind=verifypr(spr.value);
-            if(ind>-1) {
-             
-                if(confirm("I am ready to delete "+v+" project, proceed?")){
-                     arpr.splice(ind,1);  
-                localStorage.setItem("projects",JSON.stringify(arpr));
-                alert("Project has been deleted, app will restart");
-                window.location.reload();
 
-
-            }
-            }
-        }
-
-
-    }
-if(v==="Save project"){
-
-
-    var n=prompt("Type project name",actual);
-    var ind=verifypr(n)
-    if(ind===-1){
- 
-var o={};
-o.name=n;
-o.cont=teditor.value;
-arpr.push(o);
-//alert(JSON.stringify(arpr));
-localStorage.setItem("projects",JSON.stringify(arpr));
-alert("Project "+n+" has been saved locally")
-setuppr();
-
-
-    }
-else {
-    if(confirm("Project already exist, do you want to replace it?")){
-        arpr[ind].cont=teditor.value;
-     localStorage.setItem("projects",JSON.stringify(arpr));  
-     alert("Project "+n+" has been updated");
-
-
-    }
-
-
-}
-
-
-}
-}
-*/
 </script>
 </HTML>
