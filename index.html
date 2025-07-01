@@ -137,6 +137,20 @@ button{
 
 
 <script>
+
+var ctx = canvas.getContext("2d");
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+
+m=canvas.getClientRects()[0];
+ra=m.height/m.width;
+
+canvas.width = m.width;
+canvas.height = m.height;
+
+
+
+
     link="https://jsonblob.com/api/1387824581984837632"
 var arpr=[],actual="",arw=[], obactual=[],from="local";
 //localStorage.removeItem("projects")
