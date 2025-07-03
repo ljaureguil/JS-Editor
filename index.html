@@ -222,13 +222,14 @@ function selopc(v){
      if(v==="Save project to web") {
         var n=obactual.name;
  
-            if(n===undefined){
-                var n=prompt("Type project name","");
+          //  if(n===undefined){
+                var n=prompt("Type project name",n);
+                if(n===null) return;
                 if(n!="") obactual={name:n,cont:editor.value}
                 else {alert("Wrong name, try again");return;}
 
 
-            }
+          //  }
             var ind=verifyprw(n); //  alert(n)
             if(ind==-1){
              
