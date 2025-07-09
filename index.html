@@ -94,7 +94,7 @@ button{
 
 <div id="coo">
 <div id="ress">
-<textarea id="textarea" class="els" placeholder=" texarea"></textarea><canvas id="canvas" class="els">canvas</canvas><div id="container" class="els" >div testing</div>
+<textarea id="textarea" class="els" placeholder=" texarea"></textarea><canvas id="canvas" class="els">canvas</canvas><canvas id="can3d" class="els">3d canvas</canvas><div id="container" class="els" >div testing</div>
 
 
 </div>
@@ -108,6 +108,9 @@ button{
       <option>Save project</option>
       <option>Save project to web</option>    
       <option>Delete actual project</option>
+      <option>Set Up 3d Canvas</option>
+
+
   
        <option>New project</option>  
 
@@ -256,6 +259,9 @@ function selopc(v){
     }
        
       }
+
+      if(v==="Set Up 3d Canvas") {setUp3dCanvas();}
+      
        if(v==="New project") {obactual={};editor.value="";textarea.value="";actual=""}
        if(v==="Delete all projects"){
 
@@ -436,6 +442,111 @@ To save you project in Web: menu > Select Option > Save in wev
 You cant transfer from local to wev or web to local just select a project and saved where you want it.
 
 `
+//setUp3dCanvas();
+function loadDoc(url,callback) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", url, false);
+        xhttp.send();
+        if(callback!=undefined)  callback(xhttp.responseText);
+        return xhttp.responseText;
+    }
+    
+function setUp3dCanvas(){
+
+//threejs
+loadDoc("https://raw.githubusercontent.com/ljaureguil/Panorama360/refs/heads/main/three.js",function(r){
+   // eval(r);
+var s = document.createElement("script");
+s.innerHTML = r;
+document.head.appendChild(s);
+    //alert(r);
+    //alert("three.js loaded");
+
+  //  alert("three.js loaded");
+    loadDoc("https://raw.githubusercontent.com/ljaureguil/Panorama360/refs/heads/main/TrackballControls.js",function(r){
+     //   eval(r);
+//alert(r)
+
+s.innerHTML = r;
+        eval(r)
+document.head.appendChild(s);
+
+       // alert("TrackballControls.js loaded");
+//alert(THREE.TrackballControls)
+
+        loadDoc("https://raw.githubusercontent.com/ljaureguil/Panorama360/refs/heads/main/js/DeviceOrientationControls.js",function(r){
+        //    eval(r);alert(r)
+s.innerHTML = r;
+document.head.appendChild(s);
+           // alert("DeviceOrientationControls.js loaded");
+            init3dCanvas()
+
+
+        
+        })
+    })
+
+})
+
+}
+
+
+function init3dCanvas(){
+      //init 3d canvas
+   //   alert( THREE)
+     // alert("init3dCanvas..................");
+    var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(75, can3d.width / can3d.height, 0.1, 1000);
+    var renderer = new THREE.WebGLRenderer({canvas:can3d});//can3
+   
+    renderer.setSize(canvas.width, canvas.height);
+
+           s = new THREE.Mesh(
+                new THREE.SphereGeometry(.3, 16, 16),
+                new THREE.MeshPhongMaterial({
+                      color: "#f0ff00"
+                })
+            );
+
+
+
+
+
+            light4 = new THREE.PointLight(0xffffff, 2, 1000);
+            light4.add(s);
+            s.position.set(0, 4, -3);
+
+            scene.add(light4);
+ 
+             alight = new THREE.AmbientLight(0xaaaaaa);
+            scene.add(alight)
+    var geometry = new THREE.BoxGeometry();
+    var material = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
+    var cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+          controls = new THREE.TrackballControls(camera, renderer.domElement); //camera
+            controls.zoomSpeed = .48;//1.2;
+            controls.panSpeed = .36;//0.8;
+
+            controls.keys = ['KeyA', 'KeyS', 'KeyD'];
+          //  window.addEventListener('resize', onWindowResize, false);
+          //  setTimeout(function(){ onWindowResize();},100) 
+
+    camera.position.z = 5;
+
+    function animate() {
+        requestAnimationFrame(animate);
+     controls.update()
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+        renderer.render(scene, camera);
+        textarea.value = "x: " + cube.rotation.x.toFixed(2) + ", y: " + cube.rotation.y.toFixed(2);
+    }
+    alert("ready to animate");
+    animate();
+}
+
 
 
 
