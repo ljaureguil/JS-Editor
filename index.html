@@ -115,10 +115,6 @@ button{
        <option>New project</option>  
 
 
-
-
-
-
 <option></option>
      <option>Delete all projects</option>    
 </select>
@@ -135,6 +131,23 @@ button{
 <select id="sweb" oninput="selPrw(this.value)">
 <option>Select from Web</option>
 <option></option>
+</select>
+<select id="scanv3d" oninput="if(this.value!='Select a method')insertTx(this.value)">
+    <option>Select a method</option>
+    <option>esena.add( )</option>
+    <option>crDot(params={d:.5,texture:"",color:0xaaaaaa})</option>
+    <option>crCube(params={w:1,h:1,d:1,texture:"",color:0xaaaaaa})</option>
+  <option>crSphere(params={r:1,segsx:32,segsy:16,texture:"",color:0xaaaaaa})</option>
+  <option>crCylinder(params={r1:1,r2:1,long:1,cap:true,segsx:32,segsy:16,texture:"",color:0xaaaaaa})</option>
+  <option>crLine(params={arPoints:[[0,0,0],[1,1,1]],color:0xaaaa})</option>
+
+
+
+
+
+
+
+
 </select>
 </div>
 
@@ -199,10 +212,12 @@ setuppr();
  
     }
    
-
+setUp3dCanvas();
 
 function procesar(v){
   //  alert(v)
+clrEsena()
+
     eval(v)
 }
 function selPr(v){
@@ -495,11 +510,11 @@ function init3dCanvas(){
       //init 3d canvas
    //   alert( THREE)
      // alert("init3dCanvas..................");
-    var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera(75, can3d.width / can3d.height, 0.1, 1000);
-    var renderer = new THREE.WebGLRenderer({canvas:can3d});//can3
+     scene = new THREE.Scene(), esena = new THREE.Group();scene.add(esena)
+       camera = new THREE.PerspectiveCamera(75, can3d.width / can3d.height, 0.1, 1000);
+     renderer = new THREE.WebGLRenderer({canvas:can3d});//can3
    
-    renderer.setSize(canvas.width, canvas.height);
+    renderer.setSize(window.innerWidth,window.innerHeight);//canvas.width, canvas.height);canvas.width, canvas.height);
 
            s = new THREE.Mesh(
                 new THREE.SphereGeometry(.3, 16, 16),
@@ -524,7 +539,7 @@ scene.add( directionalLight );
     var geometry = new THREE.BoxGeometry();
     var material = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
     var cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
+    esena.add(cube);
 
           controls = new THREE.TrackballControls(camera, renderer.domElement); //camera
             controls.zoomSpeed = .48;//1.2;
@@ -544,11 +559,105 @@ scene.add( directionalLight );
         renderer.render(scene, camera);
         textarea.value = "x: " + cube.rotation.x.toFixed(2) + ", y: " + cube.rotation.y.toFixed(2);
     }
-    alert("ready to animate");
+   // alert("ready to animate");
     animate();
 }
 
 
+
+
+</script>
+
+<script>
+
+
+function crCube(params={w:1,h:1,d:1,texture:"",color:0xaaaaaa}){
+     var geometry = new THREE.BoxGeometry(params.w,params.h,params.d);
+    var material = new THREE.MeshPhongMaterial({ color: params.color });
+ var loader = new THREE.TextureLoader();
+    loader.load(params.textura, function(texture) {
+        material.map = texture
+    });
+    var cube = new THREE.Mesh(geometry, material);
+    return cube;
+}
+
+function crDot(params={d:.5,texture:"",color:0xaaaaaa}){
+     var geometry = new THREE.SphereGeometry( params.d/2, 32, 16 ); 
+    var material = new THREE.MeshPhongMaterial({ color: params.color });
+ var loader = new THREE.TextureLoader();
+    loader.load(params.textura, function(texture) {
+        material.map = texture
+    });
+    var dot = new THREE.Mesh(geometry, material);
+    return dot;
+}
+
+function crSphere(params={r:1,segsx:32,segsy:16,texture:"",color:0xaaaaaa}){
+     var geometry = new THREE.SphereGeometry( params.r, params.segsx, params.segsy ); 
+    var material = new THREE.MeshPhongMaterial({ color: params.color });
+ var loader = new THREE.TextureLoader();
+    loader.load(params.textura, function(texture) {
+        material.map = texture
+    });
+    var sphere = new THREE.Mesh(geometry, material);
+    return sphere;
+}
+
+function crCylinder(params={r1:1,r2:1,long:1,cap:true,segsx:32,segsy:16,texture:"",color:0xaaaaaa}){
+     var geometry = new THREE.CylinderGeometry( params.r1,params.r2, params.segsx, params.segsy, params.cap ); 
+    var material = new THREE.MeshPhongMaterial({ color: params.color });
+ var loader = new THREE.TextureLoader();
+    loader.load(params.textura, function(texture) {
+        material.map = texture
+    });
+    var cylinder = new THREE.Mesh(geometry, material);
+    return cylinder;
+}
+
+function crLine(params={arPoints:[[0,0,0],[1,1,1]],color:0xaaaa}){
+var points=[];
+params.arPoints.forEach(e => {
+   points.push( new THREE.Vector3( e[0], e[1], e[2] ) );
+});
+const material = new THREE.LineBasicMaterial({
+	color: params.color
+});
+
+const geometry = new THREE.BufferGeometry().setFromPoints( points );
+
+const line = new THREE.Line( geometry, material );	
+return line;	
+
+}
+
+
+function clrEsena(){
+var ar=esena.children,i=0;
+for(var i=0;i<ar.length;i++){
+
+
+}
+
+esena.children.forEach(e =>{
+ //   alert(JSON.stringify(e))
+    e.geometry.dispose();e.material.dispose();
+    esena.remove(e)
+   // group.remove(e)
+})
+}
+
+function insertTx(v){
+      var t=editor.value;
+        var i=editor.selectionStart;
+        var p1=t.slice(0,i);p2=t.slice(editor.selectionEnd,editor.value.length)
+        var e=p1 +v+ p2;
+        editor.value=e;
+        editor.focus();
+        editor.selectionEnd=i+v.length;
+
+
+}
 
 
 </script>
