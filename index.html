@@ -511,11 +511,10 @@ function init3dCanvas(){
    //   alert( THREE)
      // alert("init3dCanvas..................");
      scene = new THREE.Scene(), esena = new THREE.Group();scene.add(esena)
-       camera = new THREE.PerspectiveCamera(75, can3d.width / can3d.height, 0.1, 1000);
+       camera = new THREE.PerspectiveCamera(75, canvas.width / canvas.height, 0.1, 1000);
      renderer = new THREE.WebGLRenderer({canvas:can3d});//can3
-    renderer.setSize(can3d.width, can3d.height);//window.innerWidth,window.innerHeight);//canvas.width, canvas.height);
    
-//    renderer.setSize(window.innerWidth,window.innerHeight);//canvas.width, canvas.height);canvas.width, canvas.height);
+    renderer.setSize(canvas.width, canvas.height);//window.innerWidth,window.innerHeight);//canvas.width, canvas.height);
 
            s = new THREE.Mesh(
                 new THREE.SphereGeometry(.3, 16, 16),
