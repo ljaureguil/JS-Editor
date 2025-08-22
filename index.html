@@ -94,11 +94,11 @@ button{
 
 
 <button  onclick="procesar(editor.value)">Process</button>
-<button onclick="if(menu.style.display==='block'){menu.style.display='none';this.style.background='#eeeeee'}else {menu.style.display='block';this.style.background='#00ff00'}">Menu</button>
-<button class="cbo" onclick="ress.prepend(textarea)">T</button>
-<button class="cbo" onclick="ress.prepend(canvas)">C</button>
-<button class="cbo" onclick="ress.prepend(can3d)">3</button>
-<button class="cbo" onclick="ress.prepend(container)">D</button>
+<button id="onmen" onclick="if(menu.style.display==='block'){menu.style.display='none';this.style.background='#eeeeee'}else {menu.style.display='block';this.style.background='#00ff00'}">Menu</button>
+<button class="cbo" onclick="ress.prepend(textarea);coo.scrollLeft = 0;">T</button>
+<button class="cbo" onclick="ress.prepend(canvas);coo.scrollLeft = 0;">C</button>
+<button class="cbo" onclick="ress.prepend(can3d);coo.scrollLeft = 0;">3</button>
+<button class="cbo" onclick="ress.prepend(container);coo.scrollLeft = 0;">D</button>
 
 
 <div id="coo">
@@ -263,7 +263,7 @@ function selopc(v){
           //  }
 
           verifyprw(n,function(ind){
-           // var ind=verifyprw(n); //  alert(n)
+      
             if(ind==-1){
              
       if(confirm("This project will be sent to web, are you sure?")){
@@ -307,37 +307,27 @@ function selopc(v){
         }
     }
     if(v==="Delete actual project"){
-        var s=""
-        if(from==="local")s=spr.value;
-        else s=sweb.value;
-   
-        if(confirm("Are you sure you want to delete "+s+" '"+from+"' Project?")){
-            var ind;
-            if(from==="local")ind=verifypr(s);
-            else ind=verifyprw(s)
-            if(ind>-1) {
-             var ar
-                if(confirm("I am ready to delete "+s+" project, proceed?")){
-                    alert(from)
-                   if(from==="local"){ 
-                       arpr.splice(ind,1);  
+        
+        var s="";
+        if(from!="local"){
+            verifyprw(sweb.value,function(ind){
+                if(ind>-1 && confirm("Project found, do you want to proceed deleting it?")){
+                arw.splice(ind,1);
+ 
+                       UpdateJ(link,arw,function(){alert("Project has been deleted from web/n/nThe app will restart"); window.location.reload();})
+
+           } 
+        })
+
+        }
+        else{
+            var ind=verifypr(spr.value);
+            if(ind>-1 && confirm("Project local found, do you want to proceed deleting it?")){
+                                  arpr.splice(ind,1);  
                 localStorage.setItem("projects",JSON.stringify(arpr));
                 alert("Project has been deleted, app will restart");
                  window.location.reload();
-                   }
-                   else{
-                       alert("in de web"+ind)
-                       arw.splice(ind,1);
-                       alert(arw.length)
-                     //  UpdateJ(link,arw,function(){alert("Project "+obactual.name+" has been saved in web")})
-                       UpdateJ(link,arw,function(){alert("Project has been deleted from web/n/nThe app will restart"); window.location.reload();})
-                   }
-               
-
-
-            }
-            else alert("no")
-            }
+}
         }
 
 
@@ -425,7 +415,9 @@ function selPrw(v){
         from="web"
  
         editor.value=arw[ind].cont;
+
         procesar(editor.value);
+        onmen.click();
      //   selPr.value="Select a project";
     }
 
