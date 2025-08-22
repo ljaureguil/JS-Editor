@@ -80,6 +80,12 @@ button{
 
 
 }
+.cbo{
+    margin: 10px;
+    width: auto;
+    background-color: red;
+    color: white;
+}
 
 </style>
 <button onclick="alert(about)" style="position:absolute;top:2%;right:2%;background-color: red;color:white;width: auto;;" >?</button>
@@ -87,14 +93,20 @@ button{
 <textarea id="editor" placeholder="Type your codes here...(for your variables use var *recommended)"></textarea>
 
 
-<button onclick="procesar(editor.value)">Process</button>
+<button  onclick="procesar(editor.value)">Process</button>
 <button onclick="if(menu.style.display==='block'){menu.style.display='none';this.style.background='#eeeeee'}else {menu.style.display='block';this.style.background='#00ff00'}">Menu</button>
-
+<button class="cbo" onclick="ress.prepend(textarea)">T</button>
+<button class="cbo" onclick="ress.prepend(canvas)">C</button>
+<button class="cbo" onclick="ress.prepend(can3d)">3</button>
+<button class="cbo" onclick="ress.prepend(container)">D</button>
 
 
 <div id="coo">
 <div id="ress">
-<textarea id="textarea" class="els" placeholder=" texarea"></textarea><canvas id="canvas" class="els">canvas</canvas><canvas id="can3d" class="els">3d canvas</canvas><div id="container" class="els" >div testing</div>
+<textarea id="textarea" class="els" placeholder=" texarea"></textarea>
+<canvas id="canvas" class="els">canvas</canvas>
+<canvas id="can3d" class="els">3d canvas</canvas>
+<div id="container" class="els" >div testing</div>
 
 
 </div>
@@ -249,7 +261,9 @@ function selopc(v){
 
 
           //  }
-            var ind=verifyprw(n); //  alert(n)
+
+          verifyprw(n,function(ind){
+           // var ind=verifyprw(n); //  alert(n)
             if(ind==-1){
              
       if(confirm("This project will be sent to web, are you sure?")){
@@ -273,6 +287,7 @@ function selopc(v){
     }
 
     }
+    })
        
       }
 
@@ -364,6 +379,7 @@ setTimeout('sselopc.value="Select Option"',1500);
 
 
 function verifypr(v,ar){
+    ///aqui
       for(var i=0;i<arpr.length;i++){
         var e=arpr[i];
         if(e.name===v){
@@ -374,19 +390,35 @@ function verifypr(v,ar){
 }
 
 
-function verifyprw(v){
-      for(var i=0;i<arw.length;i++){
+function verifyprw(v,callback){
+
+GetJ(link,function(r){
+arw=r;
+
+     for(var i=0;i<arw.length;i++){
         var e=arw[i];
+      
         if(e.name===v){
+            
+              if(callback!=undefined) callback(i)
             return i;
         }
     }
+if(callback!=undefined) callback(-1)
     return -1;
+
+
+
+})
+
+
+
+ 
 }
 function selPrw(v){
 
-    actual=v;
-     var ind=verifyprw(v);
+    actual=v;//var ind=
+     verifyprw(v,function(ind){
  
     if(ind>-1) {
         obactual=arw[ind];
@@ -396,6 +428,8 @@ function selPrw(v){
         procesar(editor.value);
      //   selPr.value="Select a project";
     }
+
+    });
 }
 
 
