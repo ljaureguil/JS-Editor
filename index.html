@@ -26,7 +26,8 @@ height:45%;
 #container{
 //display:inline-block;
   float:right;
-  background-color: blue;
+  background-color: white;
+  color:blank;
 
 
 }
@@ -134,8 +135,8 @@ button{
 
 <select id="spr" oninput="selPr(this.value)">
     <option>Select Prtoject</option>
- 
-</select>
+</select> 
+   <button class="cbo" onclick="selPr(spr.value)">Go</button>
 <select id="sexamples">
 <option>Select an Example</optn  ion>
 <option></option>
@@ -144,6 +145,8 @@ button{
 <option>Select from Web</option>
 <option></option>
 </select>
+   <button class="cbo" onclick="selPrw(sweb.value)">Go</button>
+
 <select id="scanv3d" oninput="if(this.value!='Select a method')insertTx(this.value)">
     <option>Select a method</option>
     <option>esena.add( )</option>
